@@ -22,8 +22,14 @@ const Auth = () => {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const { fullName, userName, password, phoneNumber, avatarURL } = form;
+
+        const URL = 'http://localhost:5000/auth';
+
+
     }
 
     const switchMode = () => {
