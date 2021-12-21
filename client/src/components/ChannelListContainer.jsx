@@ -33,6 +33,11 @@ const CompanyHeader = () => (
 )
 
 const ChannelListContainer = () => {
+
+  const logout = () => {
+
+  }
+
   return (
     <>
       <SideBar />
