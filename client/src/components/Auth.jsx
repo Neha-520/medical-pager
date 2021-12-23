@@ -26,15 +26,15 @@ const Auth = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { fullName, userName, password, phoneNumber, avatarURL } = form;
+        const { fullName, username, password, phoneNumber, avatarURL } = form;
 
         const URL = 'http://localhost:5000/auth';
         const { data } = await axios.post(`${URL}/${isSignup ? 'signup' : 'login'}`, {
-            userName, password, fullName, phoneNumber, avatarURL,
+            username, password, fullName, phoneNumber, avatarURL,
         })
         const { token, userId, hashedPassword } = data;
         cookies.set('token', token);
-        cookies.set('userName', userName);
+        cookies.set('username', username);
         cookies.set('fullName', fullName);
         cookies.set('userId', userId);
 
@@ -69,9 +69,9 @@ const Auth = () => {
                             </div>
                         )}
                         <div className='auth__form-container_fields-content_input'>
-                            <label htmlFor='fullName'>Username</label>
+                            <label htmlFor='fullName'>username</label>
                             <input name='username' type="text"
-                                placeholder="Username"
+                                placeholder="username"
                                 onChange={handleChange}
                                 required
                             />

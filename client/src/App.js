@@ -18,7 +18,7 @@ const authToken = cookies.get("token");
 if (authToken) {
   client.connectUser({
     id: cookies.get('userId'),
-    name: cookies.get('userName'),
+    name: cookies.get('username'),
     fullName: cookies.get('fullName'),
     image: cookies.get('avatarURL'),
     hashedPassword: cookies.get('hashedPassword'),

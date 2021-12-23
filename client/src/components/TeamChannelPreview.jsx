@@ -7,7 +7,7 @@ const TeamChannelPreview = ({ channel, type }) => {
     //*preview for channel with multiple users
     const ChannelPreview = () => (
         <p className='channel-preview__item'>
-            #{channel?.data?.name || channel?.data?.id}
+            # {channel?.data?.name || channel?.data?.id}
         </p>
     )
 

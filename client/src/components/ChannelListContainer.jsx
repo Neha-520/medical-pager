@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ChannelList, useChatContext } from 'stream-chat-react'
 import Cookies from 'universal-cookie'
 import { ChannelSearch, TeamChannelList, TeamChannelPreview } from './'
@@ -34,7 +34,17 @@ const CompanyHeader = () => (
   </div>
 )
 
-const ChannelListContainer = ({ isCreating, setIsCreating, setCreateType, setIsEditing }) => {
+const customChannelTeamFilter = (channels) => {
+  return channels.filter((channel) => channel.type === 'team')
+}
+
+const customChannelMessagingFilter = (channels) => {
+  return channels.filter((channel) => channel.type === 'messaging')
+}
+
+const ChannelListContent = ({ isCreating, setIsCreating, setCreateType, setIsEditing }) => {
+
+  const { client } = useChatContext();
 
   const logout = () => {
     cookies.remove("token");
@@ -48,6 +58,8 @@ const ChannelListContainer = ({ isCreating, setIsCreating, setCreateType, setIsE
     window.location.reload();
   }
 
+  const filters = { members: { $in: [client.userID] } }
+
   return (
     <>
       <SideBar logout={logout} />
@@ -56,8 +68,8 @@ const ChannelListContainer = ({ isCreating, setIsCreating, setCreateType, setIsE
         <ChannelSearch />
         {/* for our own custom TeamChannelList we used List inChannelList */}
         <ChannelList
-          filters={{}}
-          channelRenderFilterFn={() => { }}
+          filters={filters}
+          channelRenderFilterFn={customChannelTeamFilter}
           List={(listProps) => (
             <TeamChannelList
               {...listProps} //will get all the props channellist gets from stream
@@ -81,8 +93,8 @@ const ChannelListContainer = ({ isCreating, setIsCreating, setCreateType, setIsE
         {/* for direct msges  */}
 
         <ChannelList
-          filters={{}}
-          channelRenderFilterFn={() => { }}
+          filters={filters}
+          channelRenderFilterFn={customChannelMessagingFilter}
           List={(listProps) => (
             <TeamChannelList
               {...listProps} //will get all the props channellist gets from stream
@@ -102,6 +114,37 @@ const ChannelListContainer = ({ isCreating, setIsCreating, setCreateType, setIsE
               setIsEditing={setIsEditing}
             />
           )}
+        />
+      </div>
+    </>
+  )
+}
+
+const ChannelListContainer = ({ setCreateType, setIsCreating, setIsEditing }) => {
+  const [toggleContainer, setToggleContainer] = useState(false)
+
+  return (
+    <>
+      <div className='channel-list__container'>
+        <ChannelListContent
+          setIsCreating={setIsCreating}
+          setCreateType={setCreateType}
+          setIsEditing={setIsEditing}
+        />
+      </div>
+
+      {/* //for mobile view */}
+
+      <div className='channel-list__container-responsive'
+        style={{ left: toggleContainer ? "0%" : "-89%", backgroundColor: "#005fff" }}
+      >
+        <div className='channel-list__container-toggle' onClick={() => setToggleContainer((prev) => !prev)}>
+        </div>
+        <ChannelListContent
+          setIsCreating={setIsCreating}
+          setCreateType={setCreateType}
+          setIsEditing={setIsEditing}
+          setToggleContainer={setToggleContainer}
         />
       </div>
     </>
