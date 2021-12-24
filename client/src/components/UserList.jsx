@@ -60,9 +60,8 @@ const UserList = ({ setSelectedUsers }) => {
             } catch (err) {
                 setError(true)
             }
+            setLoading(false);
         }
-        setLoading(false);
-
         if (client) getUsers();
     }, [])
 
